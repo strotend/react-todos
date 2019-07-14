@@ -12,7 +12,7 @@ module.exports = {
         loader: "babel-loader",
         exclude: { test: /node_modules/ },
         options: {
-          presets: ["@babel/preset-typescript", "@babel/preset-react"]
+          presets: ["@babel/preset-typescript"]
         }
       }
     ]
