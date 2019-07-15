@@ -16,21 +16,37 @@ const App: React.FunctionComponent = () => (
       <input id="toggle-all" className="toggle-all" type="checkbox" />
       <label />
       <ul className="todo-list">
-        <li className="">
+        <li className="completed">
           <div className="view">
-            <input className="toggle" type="checkbox" />
-            <label>1234</label>
+            <input className="toggle" type="checkbox" checked />
+            <label>완료됨</label>
             <button className="destroy" />
           </div>
-          <input className="edit" value="asdf" />
+          <input className="edit" value="완료됨" />
+        </li>
+        <li className="completed editing">
+          <div className="view">
+            <input className="toggle" type="checkbox" checked />
+            <label>완료됨 수정중</label>
+            <button className="destroy" />
+          </div>
+          <input className="edit" value="완료됨 수정중" />
         </li>
         <li className="">
           <div className="view">
             <input className="toggle" type="checkbox" />
-            <label>가나다라</label>
+            <label>해야함</label>
             <button className="destroy" />
           </div>
-          <input className="edit" value="가나다라" />
+          <input className="edit" value="해야함" />
+        </li>
+        <li className="editing">
+          <div className="view">
+            <input className="toggle" type="checkbox" />
+            <label>해야함 수정중</label>
+            <button className="destroy" />
+          </div>
+          <input className="edit" value="해야함 수정중" />
         </li>
       </ul>
     </section>
