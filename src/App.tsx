@@ -1,4 +1,4 @@
-import "@assets/todomvc.css";
+import "@src/containers/Todos/Todos.css";
 
 import React from "react";
 
