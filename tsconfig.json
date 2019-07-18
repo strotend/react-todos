@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "outDir": "./dist/",
     "paths": {
-      "@assets": ["./assets/*"],
-      "@src": ["./src/*"]
+      "@assets/*": ["./assets/*"],
+      "@src/*": ["./src/*"]
     },
     "target": "esnext"
   }
