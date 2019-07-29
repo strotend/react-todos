@@ -1,4 +1,4 @@
-import "./Todos.css";
+import "todomvc-app-css/index.css";
 
 import React, { useRef, useState } from "react";
 
