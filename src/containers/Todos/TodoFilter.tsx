@@ -1,9 +1,13 @@
 import React from "react";
 
-const TodoFilter: React.FunctionComponent = () => (
+interface PropsType {
+  todos: TodoType[];
+}
+
+const TodoFilter: React.FunctionComponent<PropsType> = props => (
   <footer className="footer">
     <span className="todo-count">
-      <strong>2</strong>
+      <strong>{props.todos.length}</strong>
       <span> </span>
       <span>items</span>
       <span> left</span>
