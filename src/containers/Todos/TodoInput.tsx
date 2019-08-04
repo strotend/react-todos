@@ -8,7 +8,7 @@ interface PropsType {
 const TodoInput: React.FunctionComponent<PropsType> = props => {
   const refInput = useRef<HTMLInputElement>(null);
 
-  const handleKeyDown: React.KeyboardEventHandler = event => {
+  const handleKeyPress: React.KeyboardEventHandler = event => {
     if (refInput.current instanceof HTMLElement) {
       if (event.key === "Enter") {
         const title = refInput.current.value;
@@ -26,7 +26,7 @@ const TodoInput: React.FunctionComponent<PropsType> = props => {
         className="new-todo"
         placeholder="What needs to be done?"
         defaultValue=""
-        onKeyDown={handleKeyDown}
+        onKeyPress={handleKeyPress}
       />
     </div>
   );
