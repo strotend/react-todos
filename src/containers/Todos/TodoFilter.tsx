@@ -4,14 +4,17 @@ interface PropsType {
   todos: TodoType[];
   filter: "ALL" | "ACTIVE" | "COMPLETED";
   setFilter: (filter: "ALL" | "ACTIVE" | "COMPLETED") => void;
+  deleteCompletedTodos: () => void;
 }
 
-const TodoFilter: React.FunctionComponent<PropsType> = props =>
-  props.todos.length ? (
+const TodoFilter: React.FunctionComponent<PropsType> = props => {
+  const completedTodos = props.todos.filter(todo => todo.completed);
+
+  return props.todos.length ? (
     <footer className="footer">
       <span className="todo-count">
         <strong>
-          {props.todos.filter(todo => todo.completed).length}
+          {completedTodos.length}
           <> / </>
           {props.todos.length}
         </strong>
@@ -47,7 +50,15 @@ const TodoFilter: React.FunctionComponent<PropsType> = props =>
           </a>
         </li>
       </ul>
+      {Boolean(completedTodos.length) && (
+        <button
+          className="clear-completed"
+          onClick={() => props.deleteCompletedTodos()}
+        >
+          Clear completed
+        </button>
+      )}
     </footer>
   ) : null;
-
+};
 export default TodoFilter;

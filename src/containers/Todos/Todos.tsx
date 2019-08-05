@@ -12,6 +12,10 @@ const Todos: React.FunctionComponent = () => {
   const [filter, setFilter] = useState<"ALL" | "ACTIVE" | "COMPLETED">("ALL");
   const [todos, setTodos] = useState<TodoType[]>([]);
 
+  const deleteCompletedTodos = () => {
+    setTodos(todos.filter(todo => !todo.completed));
+  };
+
   const createTodo = (todoTitle: string) => {
     const todo = {
       id: ++refTodoCounter.current,
@@ -19,6 +23,7 @@ const Todos: React.FunctionComponent = () => {
       title: todoTitle
     };
     setTodos([...todos, todo]);
+    setFilter("ALL");
   };
 
   const updateTodo = (
@@ -58,7 +63,12 @@ const Todos: React.FunctionComponent = () => {
         updateTodo={updateTodo}
         deleteTodo={deleteTodo}
       />
-      <TodoFilter todos={todos} filter={filter} setFilter={setFilter} />
+      <TodoFilter
+        todos={todos}
+        filter={filter}
+        setFilter={setFilter}
+        deleteCompletedTodos={deleteCompletedTodos}
+      />
     </div>
   );
 };
