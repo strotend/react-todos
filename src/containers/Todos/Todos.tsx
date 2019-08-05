@@ -9,11 +9,19 @@ import TodoFilter from "./TodoFilter";
 const Todos: React.FunctionComponent = () => {
   const refTodoCounter = useRef<number>(0);
 
-  const [filter, setFilter] = useState<"ALL" | "ACTIVE" | "COMPLETED">("ALL");
+  const [filterBy, setFilterBy] = useState<"ALL" | "ACTIVE" | "COMPLETED">(
+    "ALL"
+  );
   const [todos, setTodos] = useState<TodoType[]>([]);
 
   const deleteCompletedTodos = () => {
     setTodos(todos.filter(todo => !todo.completed));
+  };
+
+  const toggleTodosCompleted = () => {
+    const completed =
+      Boolean(todos.length) && !todos.every(todo => todo.completed);
+    setTodos(todos.map(todo => ({ ...todo, completed })));
   };
 
   const createTodo = (todoTitle: string) => {
@@ -23,7 +31,7 @@ const Todos: React.FunctionComponent = () => {
       title: todoTitle
     };
     setTodos([...todos, todo]);
-    setFilter("ALL");
+    setFilterBy("ALL");
   };
 
   const updateTodo = (
@@ -44,29 +52,20 @@ const Todos: React.FunctionComponent = () => {
     setTodos(todos.filter(todo => todo.id !== todoId));
   };
 
-  const filteredTodos = todos.filter(todo => {
-    switch (filter) {
-      case "ALL":
-        return true;
-      case "ACTIVE":
-        return todo.completed === false;
-      case "COMPLETED":
-        return todo.completed === true;
-    }
-  });
-
   return (
     <div>
       <TodoInput todos={todos} createTodo={createTodo} />
       <TodoList
-        todos={filteredTodos}
+        todos={todos}
+        filterBy={filterBy}
+        toggleTodosCompleted={toggleTodosCompleted}
         updateTodo={updateTodo}
         deleteTodo={deleteTodo}
       />
       <TodoFilter
         todos={todos}
-        filter={filter}
-        setFilter={setFilter}
+        filterBy={filterBy}
+        setFilterBy={setFilterBy}
         deleteCompletedTodos={deleteCompletedTodos}
       />
     </div>

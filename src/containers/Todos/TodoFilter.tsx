@@ -2,8 +2,8 @@ import React from "react";
 
 interface PropsType {
   todos: TodoType[];
-  filter: "ALL" | "ACTIVE" | "COMPLETED";
-  setFilter: (filter: "ALL" | "ACTIVE" | "COMPLETED") => void;
+  filterBy: "ALL" | "ACTIVE" | "COMPLETED";
+  setFilterBy: (filter: "ALL" | "ACTIVE" | "COMPLETED") => void;
   deleteCompletedTodos: () => void;
 }
 
@@ -22,9 +22,9 @@ const TodoFilter: React.FunctionComponent<PropsType> = props => {
       <ul className="filters">
         <li>
           <a
-            className={props.filter === "ALL" ? "selected" : undefined}
+            className={props.filterBy === "ALL" ? "selected" : undefined}
             style={{ cursor: "pointer" }}
-            onClick={() => props.setFilter("ALL")}
+            onClick={() => props.setFilterBy("ALL")}
           >
             All
           </a>
@@ -32,9 +32,9 @@ const TodoFilter: React.FunctionComponent<PropsType> = props => {
         <span> </span>
         <li>
           <a
-            className={props.filter === "ACTIVE" ? "selected" : undefined}
+            className={props.filterBy === "ACTIVE" ? "selected" : undefined}
             style={{ cursor: "pointer" }}
-            onClick={() => props.setFilter("ACTIVE")}
+            onClick={() => props.setFilterBy("ACTIVE")}
           >
             Active
           </a>
@@ -42,9 +42,9 @@ const TodoFilter: React.FunctionComponent<PropsType> = props => {
         <span> </span>
         <li>
           <a
-            className={props.filter === "COMPLETED" ? "selected" : undefined}
+            className={props.filterBy === "COMPLETED" ? "selected" : undefined}
             style={{ cursor: "pointer" }}
-            onClick={() => props.setFilter("COMPLETED")}
+            onClick={() => props.setFilterBy("COMPLETED")}
           >
             Completed
           </a>
