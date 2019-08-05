@@ -2,6 +2,7 @@ import React from "react";
 
 interface PropsType {
   todos: TodoType[];
+  removeTodo: (id: number) => void;
 }
 
 const TodoList: React.FunctionComponent<PropsType> = props => (
@@ -14,7 +15,11 @@ const TodoList: React.FunctionComponent<PropsType> = props => (
           <div className="view">
             <input className="toggle" type="checkbox" />
             <label>{todo.title}</label>
-            <button className="destroy" />
+            <button
+              className="destroy"
+              style={{ cursor: "pointer" }}
+              onClick={() => props.removeTodo(todo.id)}
+            />
           </div>
           <input className="edit" value={todo.title} readOnly />
         </li>

@@ -19,10 +19,14 @@ const Todos: React.FunctionComponent = () => {
     setTodos([...todos, todo]);
   };
 
+  const removeTodo = (id: number) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
   return (
     <div>
       <TodoInput todos={todos} addTodo={addTodo} />
-      <TodoList todos={todos} />
+      <TodoList todos={todos} removeTodo={removeTodo} />
       <TodoFilter todos={todos} />
     </div>
   );
