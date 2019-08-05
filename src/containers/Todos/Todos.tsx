@@ -10,34 +10,37 @@ const Todos: React.FunctionComponent = () => {
   const refTodoCounter = useRef<number>(0);
   const [todos, setTodos] = useState<TodoType[]>([]);
 
-  const addTodo = (title: string) => {
+  const createTodo = (todoTitle: string) => {
     const todo = {
       id: ++refTodoCounter.current,
       completed: false,
-      title
+      title: todoTitle
     };
     setTodos([...todos, todo]);
   };
 
-  const updateTodo = (id: number, todo: Partial<TodoType>) => {
-    const todoIndex = todos.findIndex(todo => todo.id === id);
+  const updateTodo = (
+    todoId: number,
+    todoProperties: Partial<TodoType> = {}
+  ) => {
+    const todoIndex = todos.findIndex(todo => todo.id === todoId);
     if (0 <= todoIndex) {
       setTodos([
         ...todos.slice(0, todoIndex),
-        { ...todos[todoIndex], ...todo, id },
+        { ...todos[todoIndex], ...todoProperties, id: todoId },
         ...todos.slice(todoIndex + 1)
       ]);
     }
   };
 
-  const removeTodo = (id: number) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+  const deleteTodo = (todoId: number) => {
+    setTodos(todos.filter(todo => todo.id !== todoId));
   };
 
   return (
     <div>
-      <TodoInput todos={todos} addTodo={addTodo} />
-      <TodoList todos={todos} updateTodo={updateTodo} removeTodo={removeTodo} />
+      <TodoInput todos={todos} createTodo={createTodo} />
+      <TodoList todos={todos} updateTodo={updateTodo} deleteTodo={deleteTodo} />
       <TodoFilter todos={todos} />
     </div>
   );

@@ -2,8 +2,8 @@ import React from "react";
 
 interface PropsType {
   todo: TodoType;
-  updateTodo: (id: number, todo: Partial<TodoType>) => void;
-  removeTodo: (id: number) => void;
+  update: (todoProperties: Partial<TodoType>) => void;
+  delete: () => void;
 }
 
 const TodoListItem: React.FunctionComponent<PropsType> = props => (
@@ -12,15 +12,13 @@ const TodoListItem: React.FunctionComponent<PropsType> = props => (
       <input
         className="toggle"
         type="checkbox"
-        onChange={event =>
-          props.updateTodo(props.todo.id, { completed: event.target.checked })
-        }
+        onChange={event => props.update({ completed: event.target.checked })}
       />
       <label>{props.todo.title}</label>
       <button
         className="destroy"
         style={{ cursor: "pointer" }}
-        onClick={() => props.removeTodo(props.todo.id)}
+        onClick={() => props.delete()}
       />
     </div>
     <input className="edit" value={props.todo.title} readOnly />

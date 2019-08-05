@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 
 interface PropsType {
   todos: TodoType[];
-  addTodo: (title: string) => void;
+  createTodo: (todoTitle: string) => void;
 }
 
 const TodoInput: React.FunctionComponent<PropsType> = props => {
@@ -11,9 +11,9 @@ const TodoInput: React.FunctionComponent<PropsType> = props => {
   const handleKeyPress: React.KeyboardEventHandler = event => {
     if (refInput.current instanceof HTMLElement) {
       if (event.key === "Enter") {
-        const title = refInput.current.value;
+        const todoTitle = refInput.current.value;
+        props.createTodo(todoTitle);
         refInput.current.value = "";
-        props.addTodo(title);
       }
     }
   };
