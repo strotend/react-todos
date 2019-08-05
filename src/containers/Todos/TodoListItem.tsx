@@ -12,6 +12,7 @@ const TodoListItem: React.FunctionComponent<PropsType> = props => (
       <input
         className="toggle"
         type="checkbox"
+        checked={props.todo.completed}
         onChange={event => props.update({ completed: event.target.checked })}
       />
       <label>{props.todo.title}</label>
