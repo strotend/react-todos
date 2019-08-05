@@ -1,5 +1,7 @@
 import React from "react";
 
+import TodoListItem from "./TodoListItem";
+
 interface PropsType {
   todos: TodoType[];
   updateTodo: (id: number, todo: Partial<TodoType>) => void;
@@ -12,24 +14,12 @@ const TodoList: React.FunctionComponent<PropsType> = props => (
     <label />
     <ul className="todo-list">
       {props.todos.map(todo => (
-        <li key={todo.id} className={todo.completed ? "completed" : undefined}>
-          <div className="view">
-            <input
-              className="toggle"
-              type="checkbox"
-              onChange={event =>
-                props.updateTodo(todo.id, { completed: event.target.checked })
-              }
-            />
-            <label>{todo.title}</label>
-            <button
-              className="destroy"
-              style={{ cursor: "pointer" }}
-              onClick={() => props.removeTodo(todo.id)}
-            />
-          </div>
-          <input className="edit" value={todo.title} readOnly />
-        </li>
+        <TodoListItem
+          key={todo.id}
+          todo={todo}
+          updateTodo={props.updateTodo}
+          removeTodo={props.removeTodo}
+        />
       ))}
     </ul>
   </section>
