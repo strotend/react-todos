@@ -1,29 +1,44 @@
 import React from "react";
+import { fetchUpdateTodo, fetchDeleteTodo } from "./api";
 
 interface PropsType {
   todo: TodoType;
-  update: (todoProperties: Partial<TodoType>) => void;
-  delete: () => void;
+  onDelete: () => void;
+  onUpdate: () => void;
 }
 
-const TodoListItem: React.FunctionComponent<PropsType> = props => (
-  <li className={props.todo.completed ? "completed" : undefined}>
-    <div className="view">
-      <input
-        className="toggle"
-        type="checkbox"
-        checked={props.todo.completed}
-        onChange={event => props.update({ completed: event.target.checked })}
-      />
-      <label>{props.todo.title}</label>
-      <button
-        className="destroy"
-        style={{ cursor: "pointer" }}
-        onClick={() => props.delete()}
-      />
-    </div>
-    <input className="edit" value={props.todo.title} readOnly />
-  </li>
-);
+const TodoListItem: React.FunctionComponent<PropsType> = props => {
+  const handleChangeCompleted: React.ChangeEventHandler<
+    HTMLInputElement
+  > = async event => {
+    await fetchUpdateTodo(props.todo.id, { completed: event.target.checked });
+    props.onUpdate();
+  };
+
+  const handleClickDelete: React.MouseEventHandler = async event => {
+    await fetchDeleteTodo(props.todo.id);
+    props.onDelete();
+  };
+
+  return (
+    <li className={props.todo.completed ? "completed" : undefined}>
+      <div className="view">
+        <input
+          className="toggle"
+          type="checkbox"
+          checked={props.todo.completed}
+          onChange={handleChangeCompleted}
+        />
+        <label>{props.todo.title}</label>
+        <button
+          className="destroy"
+          style={{ cursor: "pointer" }}
+          onClick={handleClickDelete}
+        />
+      </div>
+      <input className="edit" value={props.todo.title} readOnly />
+    </li>
+  );
+};
 
 export default TodoListItem;

@@ -1,72 +1,37 @@
 import "todomvc-app-css/index.css";
 
-import React, { useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 
-import TodoInput from "./TodoInput";
+import useTodosStore from "./useTodosStore";
+import TodoCreateInput from "./TodoCreateInput";
 import TodoList from "./TodoList";
 import TodoFilter from "./TodoFilter";
 
 const Todos: React.FunctionComponent = () => {
-  const refTodoCounter = useRef<number>(0);
+  const [filter, setFilter] = useState<"ALL" | "ACTIVE" | "COMPLETED">("ALL");
+  const todosStore = useTodosStore();
 
-  const [filterBy, setFilterBy] = useState<"ALL" | "ACTIVE" | "COMPLETED">(
-    "ALL"
-  );
-  const [todos, setTodos] = useState<TodoType[]>([]);
-
-  const deleteCompletedTodos = () => {
-    setTodos(todos.filter(todo => !todo.completed));
-  };
-
-  const toggleTodosCompleted = () => {
-    const completed =
-      Boolean(todos.length) && !todos.every(todo => todo.completed);
-    setTodos(todos.map(todo => ({ ...todo, completed })));
-  };
-
-  const createTodo = (todoTitle: string) => {
-    const todo = {
-      id: ++refTodoCounter.current,
-      completed: false,
-      title: todoTitle
-    };
-    setTodos([...todos, todo]);
-    setFilterBy("ALL");
-  };
-
-  const updateTodo = (
-    todoId: number,
-    todoProperties: Partial<TodoType> = {}
-  ) => {
-    const todoIndex = todos.findIndex(todo => todo.id === todoId);
-    if (0 <= todoIndex) {
-      setTodos([
-        ...todos.slice(0, todoIndex),
-        { ...todos[todoIndex], ...todoProperties, id: todoId },
-        ...todos.slice(todoIndex + 1)
-      ]);
-    }
-  };
-
-  const deleteTodo = (todoId: number) => {
-    setTodos(todos.filter(todo => todo.id !== todoId));
-  };
+  useEffect(() => {
+    todosStore.getTodos();
+  }, []);
 
   return (
     <div>
-      <TodoInput todos={todos} createTodo={createTodo} />
+      <TodoCreateInput
+        todos={todosStore.todos}
+        onCreate={todosStore.getTodos}
+      />
       <TodoList
-        todos={todos}
-        filterBy={filterBy}
-        toggleTodosCompleted={toggleTodosCompleted}
-        updateTodo={updateTodo}
-        deleteTodo={deleteTodo}
+        filter={filter}
+        todos={todosStore.todos}
+        getTodos={todosStore.getTodos}
+        toggleTodosCompleted={todosStore.toggleTodosCompleted}
       />
       <TodoFilter
-        todos={todos}
-        filterBy={filterBy}
-        setFilterBy={setFilterBy}
-        deleteCompletedTodos={deleteCompletedTodos}
+        filter={filter}
+        setFilter={setFilter}
+        todos={todosStore.todos}
+        deleteCompletedTodos={todosStore.deleteCompletedTodos}
       />
     </div>
   );

@@ -4,21 +4,20 @@ import TodoListItem from "./TodoListItem";
 
 interface PropsType {
   todos: TodoType[];
-  filterBy: "ALL" | "ACTIVE" | "COMPLETED";
+  filter: "ALL" | "ACTIVE" | "COMPLETED";
+  getTodos: () => void;
   toggleTodosCompleted: () => void;
-  updateTodo: (todoId: number, todoProperties: Partial<TodoType>) => void;
-  deleteTodo: (todoId: number) => void;
 }
 
 const TodoList: React.FunctionComponent<PropsType> = props => {
   const filterVisibleTodo = (todo: TodoType) => {
-    switch (props.filterBy) {
+    switch (props.filter) {
       case "ALL":
         return true;
       case "ACTIVE":
-        return todo.completed === false;
+        return !todo.completed;
       case "COMPLETED":
-        return todo.completed === true;
+        return todo.completed;
     }
   };
 
@@ -42,8 +41,8 @@ const TodoList: React.FunctionComponent<PropsType> = props => {
           <TodoListItem
             key={todo.id}
             todo={todo}
-            update={todoProperties => props.updateTodo(todo.id, todoProperties)}
-            delete={() => props.deleteTodo(todo.id)}
+            onDelete={props.getTodos}
+            onUpdate={props.getTodos}
           />
         ))}
       </ul>
