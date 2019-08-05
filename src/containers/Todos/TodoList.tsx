@@ -2,6 +2,7 @@ import React from "react";
 
 interface PropsType {
   todos: TodoType[];
+  updateTodo: (id: number, todo: Partial<TodoType>) => void;
   removeTodo: (id: number) => void;
 }
 
@@ -13,7 +14,13 @@ const TodoList: React.FunctionComponent<PropsType> = props => (
       {props.todos.map(todo => (
         <li key={todo.id} className={todo.completed ? "completed" : undefined}>
           <div className="view">
-            <input className="toggle" type="checkbox" />
+            <input
+              className="toggle"
+              type="checkbox"
+              onChange={event =>
+                props.updateTodo(todo.id, { completed: event.target.checked })
+              }
+            />
             <label>{todo.title}</label>
             <button
               className="destroy"

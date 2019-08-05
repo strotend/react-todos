@@ -19,6 +19,17 @@ const Todos: React.FunctionComponent = () => {
     setTodos([...todos, todo]);
   };
 
+  const updateTodo = (id: number, todo: Partial<TodoType>) => {
+    const todoIndex = todos.findIndex(todo => todo.id === id);
+    if (0 <= todoIndex) {
+      setTodos([
+        ...todos.slice(0, todoIndex),
+        { ...todos[todoIndex], ...todo, id },
+        ...todos.slice(todoIndex + 1)
+      ]);
+    }
+  };
+
   const removeTodo = (id: number) => {
     setTodos(todos.filter(todo => todo.id !== id));
   };
@@ -26,7 +37,7 @@ const Todos: React.FunctionComponent = () => {
   return (
     <div>
       <TodoInput todos={todos} addTodo={addTodo} />
-      <TodoList todos={todos} removeTodo={removeTodo} />
+      <TodoList todos={todos} updateTodo={updateTodo} removeTodo={removeTodo} />
       <TodoFilter todos={todos} />
     </div>
   );
