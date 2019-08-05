@@ -10,10 +10,11 @@ const TodoFilter: React.FunctionComponent<PropsType> = props =>
   props.todos.length ? (
     <footer className="footer">
       <span className="todo-count">
-        <strong>{props.todos.length}</strong>
-        <span> </span>
-        <span>items</span>
-        <span> left</span>
+        <strong>
+          {props.todos.filter(todo => todo.completed).length}
+          <> / </>
+          {props.todos.length}
+        </strong>
       </span>
       <ul className="filters">
         <li>
