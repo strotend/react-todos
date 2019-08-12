@@ -30,7 +30,8 @@ module.exports = (env, argv) => {
     resolve: {
       alias: {
         "@assets": path.resolve("./assets"),
-        "@src": path.resolve("./src")
+        "@src": path.resolve("./src"),
+        "react-dom": "@hot-loader/react-dom"
       },
       extensions: [".js", ".jsx", ".ts", ".tsx"]
     }
