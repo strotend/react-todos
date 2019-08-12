@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fetchCreateTodo } from "./api";
+import { requestCreateTodo } from "./api";
 
 interface PropsType {
   todos: TodoType[];
@@ -11,7 +11,7 @@ const TodoCreateInput: React.FunctionComponent<PropsType> = props => {
 
   const createTodo = async () => {
     if (todoTitle) {
-      await fetchCreateTodo(todoTitle);
+      await requestCreateTodo(todoTitle);
       props.onCreate();
       setTodoTitle("");
     }

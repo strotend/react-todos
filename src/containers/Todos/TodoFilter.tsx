@@ -61,4 +61,5 @@ const TodoFilter: React.FunctionComponent<PropsType> = props => {
     </footer>
   ) : null;
 };
+
 export default TodoFilter;

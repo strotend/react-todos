@@ -1,32 +1,28 @@
 import { useState } from "react";
 
 import {
-  fetchGetTodos,
-  fetchDeleteCompletedTodos,
-  fetchToggleTodosCompleted
+  requestGetTodos,
+  requestDeleteCompletedTodos,
+  requestToggleTodosCompleted
 } from "./api";
 
 const useTodosStore = () => {
   const [todos, setTodos] = useState<TodoType[]>([]);
 
-  const getTodos = async () => {
-    const todos = await fetchGetTodos();
-    setTodos(todos);
-  };
-  const deleteCompletedTodos = async () => {
-    await fetchDeleteCompletedTodos();
-    getTodos();
-  };
-  const toggleTodosCompleted = async () => {
-    await fetchToggleTodosCompleted();
-    getTodos();
-  };
-
   return {
     todos,
-    getTodos,
-    deleteCompletedTodos,
-    toggleTodosCompleted
+    getTodos: async () => {
+      const todos = await requestGetTodos();
+      setTodos(todos);
+    },
+    deleteCompletedTodos: async () => {
+      const todos = await requestDeleteCompletedTodos();
+      setTodos(todos);
+    },
+    toggleTodosCompleted: async () => {
+      const todos = await requestToggleTodosCompleted();
+      setTodos(todos);
+    }
   };
 };
 
