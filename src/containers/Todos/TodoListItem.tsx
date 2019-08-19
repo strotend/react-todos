@@ -1,4 +1,6 @@
-import React from "react";
+import "./TodoListItem.css";
+
+import React, { useState } from "react";
 
 import { TodoType } from "./types";
 
@@ -9,6 +11,8 @@ interface PropsType {
 }
 
 const TodoListItem: React.FunctionComponent<PropsType> = props => {
+  const [stared, setStared] = useState<boolean>(false);
+
   const handleChangeCompleted: React.ChangeEventHandler<
     HTMLInputElement
   > = async event => {
@@ -40,10 +44,10 @@ const TodoListItem: React.FunctionComponent<PropsType> = props => {
           {props.todo.title}
         </label>
         <button
-          className="destroy"
-          style={{ cursor: "pointer" }}
-          onClick={handleClickDelete}
+          className={stared ? "unstar" : "star"}
+          onClick={() => setStared(!stared)}
         />
+        <button className="destroy" onClick={handleClickDelete} />
       </div>
       <input className="edit" value={props.todo.title} readOnly />
     </li>
