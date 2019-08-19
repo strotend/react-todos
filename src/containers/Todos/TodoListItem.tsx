@@ -11,16 +11,27 @@ interface PropsType {
 }
 
 const TodoListItem: React.FunctionComponent<PropsType> = props => {
-  const [stared, setStared] = useState<boolean>(false);
-
   const handleChangeCompleted: React.ChangeEventHandler<
     HTMLInputElement
-  > = async event => {
-    props.updateTodo(props.todo.id, { completed: event.target.checked });
+  > = event => {
+    if (event.target.checked) {
+      props.updateTodo(
+        props.todo.id,
+        props.todo.stared
+          ? { completed: true, stared: false }
+          : { completed: true }
+      );
+    } else {
+      props.updateTodo(props.todo.id, { completed: false });
+    }
   };
 
-  const handleClickDelete: React.MouseEventHandler = async () => {
+  const handleClickDelete: React.MouseEventHandler = () => {
     props.deleteTodo(props.todo.id);
+  };
+
+  const handleClickStar: React.MouseEventHandler = () => {
+    props.updateTodo(props.todo.id, { stared: !props.todo.stared });
   };
 
   return (
@@ -44,10 +55,14 @@ const TodoListItem: React.FunctionComponent<PropsType> = props => {
           {props.todo.title}
         </label>
         <button
-          className={stared ? "unstar" : "star"}
-          onClick={() => setStared(!stared)}
+          className={props.todo.stared ? "star" : "unstar"}
+          onClick={handleClickStar}
         />
-        <button className="destroy" onClick={handleClickDelete} />
+        <button
+          className="destroy"
+          style={{ cursor: "pointer" }}
+          onClick={handleClickDelete}
+        />
       </div>
       <input className="edit" value={props.todo.title} readOnly />
     </li>

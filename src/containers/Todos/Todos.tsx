@@ -39,7 +39,12 @@ const Todos: React.FunctionComponent = () => {
   };
 
   const createTodo = (todoTitle: string) => {
-    const todo = { id: todosCount + 1, title: todoTitle, completed: false };
+    const todo = {
+      id: todosCount + 1,
+      title: todoTitle,
+      completed: false,
+      stared: false
+    };
     setTodosCount(todosCount + 1);
     setTodos([...todos, todo]);
   };
@@ -49,11 +54,22 @@ const Todos: React.FunctionComponent = () => {
   const updateTodo = (todoId: number, todoProperties: Partial<TodoType>) => {
     const todoIndex = todos.findIndex(todo => todo.id === todoId);
     if (0 <= todoIndex) {
-      setTodos([
-        ...todos.slice(0, todoIndex),
-        { ...todos[todoIndex], ...todoProperties, id: todoId },
-        ...todos.slice(todoIndex + 1)
-      ]);
+      const todo = todos[todoIndex];
+      if (todoProperties.hasOwnProperty("stared")) {
+        setTodos(
+          [
+            { ...todo, ...todoProperties, id: todoId },
+            ...todos.slice(0, todoIndex),
+            ...todos.slice(todoIndex + 1)
+          ].sort((todoA, todoB) => Number(todoB.stared) - Number(todoA.stared))
+        );
+      } else {
+        setTodos([
+          ...todos.slice(0, todoIndex),
+          { ...todo, ...todoProperties, id: todoId },
+          ...todos.slice(todoIndex + 1)
+        ]);
+      }
     }
   };
 
