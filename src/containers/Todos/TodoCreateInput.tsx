@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { TodoType } from "./types";
+
 interface PropsType {
   todos: TodoType[];
   createTodo: (toodTitle: string) => void;

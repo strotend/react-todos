@@ -1,15 +1,34 @@
 import "todomvc-app-css/index.css";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
+import { TodoFilterType, TodoType, TodosStateType } from "./types";
 import TodoCreateInput from "./TodoCreateInput";
 import TodoList from "./TodoList";
 import TodoFilter from "./TodoFilter";
 
+const TODOS_STATE_KEY = "todos-app/todosState";
+const initialTodosState: TodosStateType = { todosCount: 0, todos: [] };
+const loadTodosState = (): TodosStateType => {
+  try {
+    const todosState = localStorage.getItem(TODOS_STATE_KEY);
+    return todosState ? JSON.parse(todosState) : initialTodosState;
+  } catch {
+    return initialTodosState;
+  }
+};
+const saveTodosState = (todosState: TodosStateType): void => {
+  try {
+    localStorage.setItem(TODOS_STATE_KEY, JSON.stringify(todosState));
+  } catch {}
+};
+
 const Todos: React.FunctionComponent = () => {
-  const [filter, setFilter] = useState<"ALL" | "ACTIVE" | "COMPLETED">("ALL");
-  const [todosCount, setTodosCount] = useState<number>(0);
-  const [todos, setTodos] = useState<TodoType[]>([]);
+  const [filter, setFilter] = useState<TodoFilterType>("ALL");
+
+  const todosState = useMemo(loadTodosState, []);
+  const [todosCount, setTodosCount] = useState<number>(todosState.todosCount);
+  const [todos, setTodos] = useState<TodoType[]>(todosState.todos);
 
   const deleteCompletedTodos = () => {
     setTodos(todos.filter(todo => !todo.completed));
@@ -38,7 +57,10 @@ const Todos: React.FunctionComponent = () => {
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const todosState = { todosCount, todos };
+    saveTodosState(todosState);
+  }, [todosCount, todos]);
 
   return (
     <div>

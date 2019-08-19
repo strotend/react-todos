@@ -1,5 +1,7 @@
 import React from "react";
 
+import { TodoType } from "./types";
+
 interface PropsType {
   todo: TodoType;
   deleteTodo: (todoId: number) => void;

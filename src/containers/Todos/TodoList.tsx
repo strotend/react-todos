@@ -1,5 +1,6 @@
 import React from "react";
 
+import { TodoType } from "./types";
 import TodoListItem from "./TodoListItem";
 
 interface PropsType {
