@@ -1,25 +1,17 @@
 import React, { useState } from "react";
-import { requestCreateTodo } from "./api";
 
 interface PropsType {
   todos: TodoType[];
-  onCreate: () => void;
+  createTodo: (toodTitle: string) => void;
 }
 
 const TodoCreateInput: React.FunctionComponent<PropsType> = props => {
   const [todoTitle, setTodoTitle] = useState<string>("");
 
-  const createTodo = async () => {
-    if (todoTitle) {
-      await requestCreateTodo(todoTitle);
-      props.onCreate();
-      setTodoTitle("");
-    }
-  };
-
   const handleKeyPress: React.KeyboardEventHandler = async event => {
-    if (event.key === "Enter") {
-      createTodo();
+    if (todoTitle && event.key === "Enter") {
+      props.createTodo(todoTitle);
+      setTodoTitle("");
     }
   };
 

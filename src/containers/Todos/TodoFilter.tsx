@@ -3,8 +3,8 @@ import React from "react";
 interface PropsType {
   todos: TodoType[];
   filter: "ALL" | "ACTIVE" | "COMPLETED";
-  setFilter: (filter: "ALL" | "ACTIVE" | "COMPLETED") => void;
   deleteCompletedTodos: () => void;
+  setFilter: (filter: "ALL" | "ACTIVE" | "COMPLETED") => void;
 }
 
 const TodoFilter: React.FunctionComponent<PropsType> = props => {

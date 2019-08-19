@@ -1,23 +1,20 @@
 import React from "react";
-import { requestUpdateTodo, requestDeleteTodo } from "./api";
 
 interface PropsType {
   todo: TodoType;
-  onDelete: () => void;
-  onUpdate: () => void;
+  deleteTodo: (todoId: number) => void;
+  updateTodo: (todoId: number, todoProperties: Partial<TodoType>) => void;
 }
 
 const TodoListItem: React.FunctionComponent<PropsType> = props => {
   const handleChangeCompleted: React.ChangeEventHandler<
     HTMLInputElement
   > = async event => {
-    await requestUpdateTodo(props.todo.id, { completed: event.target.checked });
-    props.onUpdate();
+    props.updateTodo(props.todo.id, { completed: event.target.checked });
   };
 
-  const handleClickDelete: React.MouseEventHandler = async event => {
-    await requestDeleteTodo(props.todo.id);
-    props.onDelete();
+  const handleClickDelete: React.MouseEventHandler = async () => {
+    props.deleteTodo(props.todo.id);
   };
 
   return (

@@ -5,8 +5,9 @@ import TodoListItem from "./TodoListItem";
 interface PropsType {
   todos: TodoType[];
   filter: "ALL" | "ACTIVE" | "COMPLETED";
-  getTodos: () => void;
   toggleTodosCompleted: () => void;
+  deleteTodo: (todoId: number) => void;
+  updateTodo: (todoId: number, todoProperties: Partial<TodoType>) => void;
 }
 
 const TodoList: React.FunctionComponent<PropsType> = props => {
@@ -41,8 +42,8 @@ const TodoList: React.FunctionComponent<PropsType> = props => {
           <TodoListItem
             key={todo.id}
             todo={todo}
-            onDelete={props.getTodos}
-            onUpdate={props.getTodos}
+            deleteTodo={props.deleteTodo}
+            updateTodo={props.updateTodo}
           />
         ))}
       </ul>
