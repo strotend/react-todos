@@ -1,29 +1,83 @@
 import "todomvc-app-css/index.css";
 
-import React, { useRef, useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
-import TodoInput from "./TodoInput";
+import { TodoFilterType, TodoType, TodosStateType } from "./types";
+import TodoCreateInput from "./TodoCreateInput";
 import TodoList from "./TodoList";
 import TodoFilter from "./TodoFilter";
 
-const Todos: React.FunctionComponent = () => {
-  const refTodoCounter = useRef<number>(0);
-  const [todos, setTodos] = useState<TodoType[]>([]);
+const TODOS_STATE_KEY = "todos-app/todosState";
+const initialTodosState: TodosStateType = { todosCount: 0, todos: [] };
+const loadTodosState = (): TodosStateType => {
+  try {
+    const todosState = localStorage.getItem(TODOS_STATE_KEY);
+    return todosState ? JSON.parse(todosState) : initialTodosState;
+  } catch {
+    return initialTodosState;
+  }
+};
+const saveTodosState = (todosState: TodosStateType): void => {
+  try {
+    localStorage.setItem(TODOS_STATE_KEY, JSON.stringify(todosState));
+  } catch {}
+};
 
-  const addTodo = (title: string) => {
-    const todo = {
-      id: ++refTodoCounter.current,
-      completed: false,
-      title
-    };
+const Todos: React.FunctionComponent = () => {
+  const [filter, setFilter] = useState<TodoFilterType>("ALL");
+
+  const todosState = useMemo(loadTodosState, []);
+  const [todosCount, setTodosCount] = useState<number>(todosState.todosCount);
+  const [todos, setTodos] = useState<TodoType[]>(todosState.todos);
+
+  const deleteCompletedTodos = () => {
+    setTodos(todos.filter(todo => !todo.completed));
+  };
+  const toggleTodosCompleted = async () => {
+    const completed = !todos.every(todo => todo.completed);
+    setTodos(todos.map(todo => ({ ...todo, completed })));
+  };
+
+  const createTodo = (todoTitle: string) => {
+    const todo = { id: todosCount + 1, title: todoTitle, completed: false };
+    setTodosCount(todosCount + 1);
     setTodos([...todos, todo]);
   };
+  const deleteTodo = (todoId: number) => {
+    setTodos(todos.filter(todo => todo.id !== todoId));
+  };
+  const updateTodo = (todoId: number, todoProperties: Partial<TodoType>) => {
+    const todoIndex = todos.findIndex(todo => todo.id === todoId);
+    if (0 <= todoIndex) {
+      setTodos([
+        ...todos.slice(0, todoIndex),
+        { ...todos[todoIndex], ...todoProperties, id: todoId },
+        ...todos.slice(todoIndex + 1)
+      ]);
+    }
+  };
+
+  useEffect(() => {
+    const todosState = { todosCount, todos };
+    saveTodosState(todosState);
+  }, [todosCount, todos]);
 
   return (
     <div>
-      <TodoInput todos={todos} addTodo={addTodo} />
-      <TodoList todos={todos} />
-      <TodoFilter todos={todos} />
+      <TodoCreateInput todos={todos} createTodo={createTodo} />
+      <TodoList
+        filter={filter}
+        todos={todos}
+        toggleTodosCompleted={toggleTodosCompleted}
+        deleteTodo={deleteTodo}
+        updateTodo={updateTodo}
+      />
+      <TodoFilter
+        todos={todos}
+        filter={filter}
+        deleteCompletedTodos={deleteCompletedTodos}
+        setFilter={setFilter}
+      />
     </div>
   );
 };
