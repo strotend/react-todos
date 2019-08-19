@@ -33,7 +33,7 @@ const Todos: React.FunctionComponent = () => {
   const deleteCompletedTodos = () => {
     setTodos(todos.filter(todo => !todo.completed));
   };
-  const toggleTodosCompleted = async () => {
+  const toggleTodosCompleted = () => {
     const completed = !todos.every(todo => todo.completed);
     setTodos(
       todos.map(todo =>

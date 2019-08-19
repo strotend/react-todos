@@ -10,7 +10,7 @@ interface PropsType {
 const TodoCreateInput: React.FunctionComponent<PropsType> = props => {
   const [todoTitle, setTodoTitle] = useState<string>("");
 
-  const handleKeyPress: React.KeyboardEventHandler = async event => {
+  const handleKeyPress: React.KeyboardEventHandler = event => {
     if (todoTitle && event.key === "Enter") {
       props.createTodo(todoTitle);
       setTodoTitle("");
