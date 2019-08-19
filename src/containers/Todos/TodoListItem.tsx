@@ -17,8 +17,8 @@ const TodoListItem: React.FunctionComponent<PropsType> = props => {
     if (event.target.checked) {
       props.updateTodo(
         props.todo.id,
-        props.todo.stared
-          ? { completed: true, stared: false }
+        props.todo.starred
+          ? { completed: true, starred: false }
           : { completed: true }
       );
     } else {
@@ -30,8 +30,8 @@ const TodoListItem: React.FunctionComponent<PropsType> = props => {
     props.deleteTodo(props.todo.id);
   };
 
-  const handleClickStar: React.MouseEventHandler = () => {
-    props.updateTodo(props.todo.id, { stared: !props.todo.stared });
+  const handleClickStar: React.MouseEventHandler = event => {
+    props.updateTodo(props.todo.id, { starred: !props.todo.starred });
   };
 
   return (
@@ -54,10 +54,12 @@ const TodoListItem: React.FunctionComponent<PropsType> = props => {
         >
           {props.todo.title}
         </label>
-        <button
-          className={props.todo.stared ? "star" : "unstar"}
-          onClick={handleClickStar}
-        />
+        {!props.todo.completed && (
+          <button
+            className={props.todo.starred ? "star" : "unstar"}
+            onClick={handleClickStar}
+          />
+        )}
         <button
           className="destroy"
           style={{ cursor: "pointer" }}

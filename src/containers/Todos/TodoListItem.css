@@ -1,6 +1,9 @@
 .todo-list li label {
   padding-left: 70px;
 }
+.todo-list li.completed label {
+  padding-left: 50px;
+}
 
 .todo-list li .star,
 .todo-list li .unstar {

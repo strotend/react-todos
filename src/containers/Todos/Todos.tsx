@@ -35,7 +35,13 @@ const Todos: React.FunctionComponent = () => {
   };
   const toggleTodosCompleted = async () => {
     const completed = !todos.every(todo => todo.completed);
-    setTodos(todos.map(todo => ({ ...todo, completed })));
+    setTodos(
+      todos.map(todo =>
+        completed
+          ? { ...todo, completed: true, starred: false }
+          : { ...todo, completed: false }
+      )
+    );
   };
 
   const createTodo = (todoTitle: string) => {
@@ -43,7 +49,7 @@ const Todos: React.FunctionComponent = () => {
       id: todosCount + 1,
       title: todoTitle,
       completed: false,
-      stared: false
+      starred: false
     };
     setTodosCount(todosCount + 1);
     setTodos([...todos, todo]);
@@ -55,13 +61,15 @@ const Todos: React.FunctionComponent = () => {
     const todoIndex = todos.findIndex(todo => todo.id === todoId);
     if (0 <= todoIndex) {
       const todo = todos[todoIndex];
-      if (todoProperties.hasOwnProperty("stared")) {
+      if (todoProperties.hasOwnProperty("starred")) {
         setTodos(
           [
             { ...todo, ...todoProperties, id: todoId },
             ...todos.slice(0, todoIndex),
             ...todos.slice(todoIndex + 1)
-          ].sort((todoA, todoB) => Number(todoB.stared) - Number(todoA.stared))
+          ].sort(
+            (todoA, todoB) => Number(todoB.starred) - Number(todoA.starred)
+          )
         );
       } else {
         setTodos([
