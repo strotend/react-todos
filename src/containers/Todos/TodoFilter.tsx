@@ -1,12 +1,12 @@
 import React from "react";
 
-import { TodoType } from "./types";
+import { TodoType, TodoFilterType } from "./types";
 
 interface PropsType {
   todos: TodoType[];
-  filter: "ALL" | "ACTIVE" | "COMPLETED";
+  filter: TodoFilterType;
   deleteCompletedTodos: () => void;
-  setFilter: (filter: "ALL" | "ACTIVE" | "COMPLETED") => void;
+  setFilter: (filter: TodoFilterType) => void;
 }
 
 const TodoFilter: React.FunctionComponent<PropsType> = props => {
