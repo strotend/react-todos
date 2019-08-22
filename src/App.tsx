@@ -1,3 +1,5 @@
+import "regenerator-runtime/runtime";
+
 import React from "react";
 import { hot } from "react-hot-loader/root";
 
