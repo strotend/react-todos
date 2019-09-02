@@ -1,11 +1,11 @@
 import React from "react";
 
-import { TodoType } from "./types";
+import { TodoType, TodoFilterType } from "./types";
 import TodoListItem from "./TodoListItem";
 
 interface PropsType {
   todos: TodoType[];
-  filter: "ALL" | "ACTIVE" | "COMPLETED";
+  filter: TodoFilterType;
   toggleTodosCompleted: () => void;
   deleteTodo: (todoId: number) => void;
   updateTodo: (todoId: number, todoProperties: Partial<TodoType>) => void;

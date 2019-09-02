@@ -33,13 +33,24 @@ const Todos: React.FunctionComponent = () => {
   const deleteCompletedTodos = () => {
     setTodos(todos.filter(todo => !todo.completed));
   };
-  const toggleTodosCompleted = async () => {
+  const toggleTodosCompleted = () => {
     const completed = !todos.every(todo => todo.completed);
-    setTodos(todos.map(todo => ({ ...todo, completed })));
+    setTodos(
+      todos.map(todo =>
+        completed
+          ? { ...todo, completed: true, starred: false }
+          : { ...todo, completed: false }
+      )
+    );
   };
 
   const createTodo = (todoTitle: string) => {
-    const todo = { id: todosCount + 1, title: todoTitle, completed: false };
+    const todo = {
+      id: todosCount + 1,
+      title: todoTitle,
+      completed: false,
+      starred: false
+    };
     setTodosCount(todosCount + 1);
     setTodos([...todos, todo]);
   };
@@ -49,11 +60,24 @@ const Todos: React.FunctionComponent = () => {
   const updateTodo = (todoId: number, todoProperties: Partial<TodoType>) => {
     const todoIndex = todos.findIndex(todo => todo.id === todoId);
     if (0 <= todoIndex) {
-      setTodos([
-        ...todos.slice(0, todoIndex),
-        { ...todos[todoIndex], ...todoProperties, id: todoId },
-        ...todos.slice(todoIndex + 1)
-      ]);
+      const todo = todos[todoIndex];
+      if (todoProperties.hasOwnProperty("starred")) {
+        setTodos(
+          [
+            { ...todo, ...todoProperties, id: todoId },
+            ...todos.slice(0, todoIndex),
+            ...todos.slice(todoIndex + 1)
+          ].sort(
+            (todoA, todoB) => Number(todoB.starred) - Number(todoA.starred)
+          )
+        );
+      } else {
+        setTodos([
+          ...todos.slice(0, todoIndex),
+          { ...todo, ...todoProperties, id: todoId },
+          ...todos.slice(todoIndex + 1)
+        ]);
+      }
     }
   };
 
